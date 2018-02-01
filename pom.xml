@@ -12,6 +12,7 @@
     <description>SpringBoot练习</description>
 
     <modules>
+        <module>data-source</module>
         <module>dubbo</module>
     </modules>
 </project>
