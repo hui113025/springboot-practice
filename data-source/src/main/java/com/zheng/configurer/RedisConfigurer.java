@@ -3,20 +3,13 @@ package com.zheng.configurer;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zheng.configurer.redis.CommonRedis;
-import com.zheng.configurer.redis.RedisConfigBean;
-import com.zheng.configurer.redis.SessionRedis;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.DefaultRedisCachePrefix;
 import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -25,29 +18,61 @@ import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * Created by admin on 2017/3/11.
+ * 两种设置redis的方式
  */
-@Configuration
-@EnableCaching
+//@Configuration
+//@EnableCaching
 public class RedisConfigurer extends CachingConfigurerSupport {
-    @Autowired
-    private SessionRedis sessionRedis;
-    @Autowired
-    private CommonRedis commonRedis;
+
+    @Value("${spring.redis.host}")
+    private String host;
+    @Value("${spring.redis.port}")
+    private Integer port;
+    @Value("${spring.redis.password}")
+    private String password;
+    @Value("${spring.redis.timeout}")
+    private Integer timeout;
+    @Value("${spring.redis.maxIdle}")
+    private Integer maxIdle;
+    @Value("${spring.redis.maxTotal}")
+    private Integer maxTotal;
+    @Value("${spring.redis.maxWaitMillis}")
+    private Integer maxWaitMillis;
+    @Value("${spring.redis.database}")
+    private Integer database;
+    @Value("${spring.session.redis.database}")
+    private Integer sessionbase;
 
     @Bean
-    public CacheManager cacheManager(@SuppressWarnings("rawtypes") RedisTemplate redisTemplate) {
+    public CacheManager cacheManager(
+            @SuppressWarnings("rawtypes") RedisTemplate<?, ?> redisTemplate) {
         // 创建缓存管理器
         RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
-        cacheManager.setDefaultExpiration(3600 * 24);
         cacheManager.setUsePrefix(true);
         cacheManager.setCachePrefix(new DefaultRedisCachePrefix(":"));
+        // 设置缓存过期时间（秒）
+        cacheManager.setDefaultExpiration(3600 * 24);
         return cacheManager;
+    }
+    @Primary
+    @Bean
+    public RedisTemplate<String, String> redisTemplate() {
+        return getRedisTemplate(jedisConnectionFactory());
     }
 
     @Bean
+    public JedisConnectionFactory jedisConnectionFactory() {
+        return connectionFactory(database);
+    }
+
     @Primary
-    public RedisTemplate redisTemplate() {
-        StringRedisTemplate template = new StringRedisTemplate(connectionFactory());
+    @Bean(name = "sessionJedisConnectionFactory")
+    public JedisConnectionFactory sessionJedisConnectionFactory() {
+        return connectionFactory(sessionbase);
+    }
+
+    private RedisTemplate getRedisTemplate(JedisConnectionFactory jedisConnectionFactory) {
+        StringRedisTemplate template = new StringRedisTemplate(jedisConnectionFactory);
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
@@ -59,50 +84,27 @@ public class RedisConfigurer extends CachingConfigurerSupport {
         return template;
     }
 
-    @Bean
-    public RedisConnectionFactory connectionFactory() {
-        RedisConnectionFactory factory = initFactory(commonRedis);
-        return factory;
-    }
 
-    @Primary
-    @Bean
-    public RedisConnectionFactory sessionJedisConnectionFactory() {
-        RedisConnectionFactory factory = initFactory(sessionRedis);
-        return factory;
-    }
-
-    /**
-     * init
-     *
-     * @param redis
-     * @return
-     */
-    private JedisConnectionFactory initFactory(RedisConfigBean redis) {
-        JedisConnectionFactory jedis = new JedisConnectionFactory();
-        jedis.setHostName(redis.getHost());
-        jedis.setPort(redis.getPort());
-        if (!StringUtils.isEmpty(redis.getPassword())) {
-            jedis.setPassword(redis.getPassword());
+    private JedisConnectionFactory connectionFactory(Integer database) {
+        JedisPoolConfig poolConfig = new JedisPoolConfig();
+        poolConfig.setMaxIdle(maxIdle);
+        poolConfig.setMaxTotal(maxTotal);
+        poolConfig.setMaxWaitMillis(maxWaitMillis);
+        poolConfig.setTestOnBorrow(true);
+        poolConfig.setTestOnReturn(true);
+        poolConfig.setTestWhileIdle(true);
+        poolConfig.setNumTestsPerEvictionRun(10);
+        poolConfig.setTimeBetweenEvictionRunsMillis(60000);
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(poolConfig);
+        jedisConnectionFactory.setHostName(host);
+        if (!password.isEmpty()) {
+            jedisConnectionFactory.setPassword(password);
         }
-        if (redis.getDatabase() != 0) {
-            jedis.setDatabase(redis.getDatabase());
-        }
-        jedis.setTimeout(redis.getTimeout());
-        jedis.setPoolConfig(poolCofig(redis.getMaxIdle(),
-                redis.getMaxTotal(), redis.getMaxWaitMillis(),redis.isTestOnBorrow(), redis.isTestOnReturn()));
-        jedis.afterPropertiesSet(); // 初始化连接pool
-        return jedis;
+        jedisConnectionFactory.setPort(port);
+        jedisConnectionFactory.setDatabase(database);
+        jedisConnectionFactory.setTimeout(timeout);
+        jedisConnectionFactory.afterPropertiesSet();
+        return jedisConnectionFactory;
     }
 
-    private JedisPoolConfig poolCofig(int maxIdle, int maxTotal,long maxWaitMillis,
-                                      boolean testOnBorrow, boolean testOnReturn) {
-        JedisPoolConfig poolCofig = new JedisPoolConfig();
-        poolCofig.setMaxIdle(maxIdle);
-        poolCofig.setMaxTotal(maxTotal);
-        poolCofig.setMaxWaitMillis(maxWaitMillis);
-        poolCofig.setTestOnBorrow(testOnBorrow);
-        poolCofig.setTestOnReturn(testOnReturn);
-        return poolCofig;
-    }
 }

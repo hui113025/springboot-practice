@@ -14,5 +14,6 @@
     <modules>
         <module>data-source</module>
         <module>dubbo</module>
+        <module>webService</module>
     </modules>
 </project>
