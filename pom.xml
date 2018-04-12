@@ -15,5 +15,6 @@
         <module>data-source</module>
         <module>dubbo</module>
         <module>webService</module>
+        <module>scheduler-vue</module>
     </modules>
 </project>
