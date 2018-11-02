@@ -16,5 +16,6 @@
         <module>dubbo</module>
         <module>webService</module>
         <module>scheduler-vue</module>
+        <module>rabbitmq</module>
     </modules>
 </project>
