@@ -17,5 +17,8 @@
         <module>webService</module>
         <module>scheduler-vue</module>
         <module>rabbitmq</module>
+        <module>mongodb</module>
+        <module>elasticSearch</module>
+        <module>zooKeeper</module>
     </modules>
 </project>
