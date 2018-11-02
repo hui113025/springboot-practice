@@ -125,7 +125,8 @@ public class RabbitMQConfigurer {
     @Autowired
     public SimpleMessageListenerContainer messageContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory());
-        container.setQueues(queue());
+//        container.setQueues(queue());
+        container.setQueues(topicQueue());
         container.setExposeListenerChannel(true);
         container.setMaxConcurrentConsumers(1);
         container.setConcurrentConsumers(1);
@@ -134,7 +135,7 @@ public class RabbitMQConfigurer {
             @Override
             public void onMessage(Message message, com.rabbitmq.client.Channel channel) throws Exception {
                 byte[] body = message.getBody();
-                System.out.println("接收者 HelloReceiver,手动收到消息 : " + new String(body));
+                System.out.println("手动收到消息 : " + new String(body));
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false); //确认消息成功消费
             }
         });
