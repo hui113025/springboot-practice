@@ -15,7 +15,7 @@ public class HelloReceiver {
     private final Logger logger = Logger.getLogger(getClass());
 
     @RabbitHandler
-    public void process(String message) {
+    public void process(String message)  {
         logger.info("接收者 HelloReceiver," + message);
     }
 

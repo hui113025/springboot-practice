@@ -1,12 +1,12 @@
 package com.zheng.configurer;
 
+import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -118,22 +118,22 @@ public class RabbitMQConfigurer {
     /**
      * 接受消息的监听，这个监听会接受消息队列的消息
      * 针对消费者配置
-     *
+     * 与@RabbitListener方式二选一
      * @return
      */
-    @Bean
-    @Autowired
+//    @Bean
+//    @Autowired
     public SimpleMessageListenerContainer messageContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory());
-//        container.setQueues(queue());
-        container.setQueues(topicQueue());
+        container.setQueues(queue());
+//        container.setQueues(topicQueue());
         container.setExposeListenerChannel(true);
         container.setMaxConcurrentConsumers(1);
         container.setConcurrentConsumers(1);
         container.setAcknowledgeMode(AcknowledgeMode.MANUAL); //设置确认模式手工确认
         container.setMessageListener(new ChannelAwareMessageListener() {
             @Override
-            public void onMessage(Message message, com.rabbitmq.client.Channel channel) throws Exception {
+            public void onMessage(Message message, Channel channel) throws Exception {
                 byte[] body = message.getBody();
                 System.out.println("手动收到消息 : " + new String(body));
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false); //确认消息成功消费
