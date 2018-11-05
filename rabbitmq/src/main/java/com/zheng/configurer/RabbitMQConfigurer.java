@@ -121,12 +121,11 @@ public class RabbitMQConfigurer {
      * 与@RabbitListener方式二选一
      * @return
      */
-//    @Bean
-//    @Autowired
+    @Bean
     public SimpleMessageListenerContainer messageContainer(ConnectionFactory connectionFactory) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory());
-        container.setQueues(queue());
-//        container.setQueues(topicQueue());
+//        container.setQueues(queue());
+        container.setQueueNames("hello","direct","topic.message");
         container.setExposeListenerChannel(true);
         container.setMaxConcurrentConsumers(1);
         container.setConcurrentConsumers(1);
@@ -134,9 +133,15 @@ public class RabbitMQConfigurer {
         container.setMessageListener(new ChannelAwareMessageListener() {
             @Override
             public void onMessage(Message message, Channel channel) throws Exception {
-                byte[] body = message.getBody();
-                System.out.println("手动收到消息 : " + new String(body));
-                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false); //确认消息成功消费
+                if("hello".equals(message.getMessageProperties().getConsumerQueue())){
+                    System.out.println("====接收到"+message.getMessageProperties().getConsumerQueue()+"队列的消息=====");
+                    System.out.println("SimpleMessageListenerContainer收到消息 : " + new String(message.getBody()));
+                    channel.basicAck(message.getMessageProperties().getDeliveryTag(), false); //确认消息成功消费
+                }else if("topic.message".equals(message.getMessageProperties().getConsumerQueue())){
+                    System.out.println("====接收到"+message.getMessageProperties().getConsumerQueue()+"队列的消息=====");
+                    System.out.println("SimpleMessageListenerContainer收到消息 : " + new String(message.getBody()));
+                    channel.basicAck(message.getMessageProperties().getDeliveryTag(), false); //确认消息成功消费
+                }
             }
         });
         return container;
