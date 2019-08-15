@@ -16,9 +16,7 @@ public class StringUtil {
 	 * Function: Tests the email address is valid or not.
 	 * 
 	 * In accordance with the demand requirements <br>
-	 * Right email: 1567890@qq.com, zh3-1900@lenovo.com, ws.sap.12@google.com.cn, weisy_99@163.com <br>
-	 * Wrong email: abc*12@qq.com, zh3-1900@lenovo. , zhang3@126.#com, ws.sap.12@google.com. , zw@bai du.com
-	 * 
+	 *
 	 * @author WeiShaoying
 	 * 
 	 * @param emailStr

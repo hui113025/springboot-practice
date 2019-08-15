@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011, Lenovo Group, Ltd. All rights reserved.
+ * Copyright (c) 2011,  Group, Ltd. All rights reserved.
  */
 package com.zheng.order.dao;
 

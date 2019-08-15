@@ -17,7 +17,7 @@ public class OrderApiAction {
     @Autowired
 	OrderApiService orderApiService;
 
-	@RequestMapping(value = "daasServiceNow/v1", method = RequestMethod.POST)
+	@RequestMapping(value = "daas/v1", method = RequestMethod.POST)
 	public PageInfo searchDaasServiceNow(@RequestBody Map<String, Object> paramJson) {
 		PageInfo pageInfo = null;
 		try {
