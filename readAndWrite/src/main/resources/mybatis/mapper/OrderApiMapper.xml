@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zheng.order.dao.OrderApiDAO">
+
+    <select id="countByOrders" parameterType="map" resultType="int">
+        select count(*) from(
+        SELECT DISTINCT
+            order_num AS orderNum,
+            status
+        FROM
+            sales_order
+        WHERE
+        order_num in
+        <foreach item="item" collection="salesOrderNumbers"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ) x
+    </select>
+
+    <select id="findByOrders" parameterType="map" resultType="com.zheng.order.entity.DaasSnDTO">
+        SELECT DISTINCT
+            order_num AS orderNum,
+            status
+        FROM
+            sales_order
+        WHERE
+        order_num in
+        <foreach item="item" collection="salesOrderNumbers"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        limit #{pageSize} offset #{startRowNum}
+    </select>
+
+</mapper>

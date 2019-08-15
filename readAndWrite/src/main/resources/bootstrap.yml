@@ -1,0 +1,47 @@
+spring:
+  datasource:
+    driverClassName_pg: org.mysql.Driver
+
+  datasource_write:
+    url_pg: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf8
+    username_pg: root
+    password_pg: 1234
+
+  datasource_read:
+    url_pg: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf8
+    username_pg: root
+    password_pg: 1234
+
+  application:
+    name: ${APPLICATION_NAME:readAndWrite}--${SERVICE_NAME:readAndWrite}
+#  profiles:
+#    active: sp-tst
+    # config server
+#  cloud:
+#    config:
+#      fail-fast: true
+#      profile: ${spring.profiles.active}
+#      label: master
+#      discovery:
+#        enabled: true
+#        service-id: sp-config-server
+#      headers:
+#        SERVICE-AUTH: ${sp.service.token}
+#sp:
+#  service:
+#    key: ${SERVICE_KEY:5c085a1c0fc2458f9f8671984cf8c2ba}
+#    token: ${SERVICE_TOKEN:eyJhbGciOiJIUzI1NiJ9.eyJz}
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://${sp.service.key}:${sp.service.token}@${EUREKA_URL:us-eureka-tst.sp.xpaas.xxx.com}/eureka
+#  instance:
+#    instance-id: ${spring.application.name}:${random.int}
+#    prefer-ip-address: true
+
+server:
+  port: 8802
+  tomcat:
+    max-threads: 1000
+    uri-encoding: UTF-8

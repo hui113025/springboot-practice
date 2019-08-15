@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+	
+	<bean id="abstractDataSource" abstract="true" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${spring.datasource.driverClassName_pg}" />
+		<property name="maxPoolSize">
+			<value>10</value> 
+        </property> 
+        <property name="minPoolSize"> 
+			<value>5</value> 
+        </property> 
+		<property name="initialPoolSize"> 
+			<value>10</value> 
+        </property> 
+        <property name="maxIdleTime"> 
+			<value>120</value> 
+        </property> 
+        <property name="idleConnectionTestPeriod">    
+            <value>60</value>    
+        </property>  
+	</bean>
+	
+    <bean id="dataSourceWrite" parent="abstractDataSource">
+		<property name="jdbcUrl" value="${spring.datasource_write.url_pg}" />
+		<property name="user" value="${spring.datasource_write.username_pg}" />
+		<property name="password" value="${spring.datasource_write.password_pg}" />
+    
+    </bean>
+
+    <bean id="dataSourceRead" parent="abstractDataSource">
+		<property name="jdbcUrl" value="${spring.datasource_read.url_pg}" />
+		<property name="user" value="${spring.datasource_read.username_pg}" />
+		<property name="password" value="${spring.datasource_read.password_pg}" />
+    	
+    </bean>
+
+    <bean id="dataSource" primary="true" class="com.zheng.datasource.route.ReadWriteRoutingDataSource">
+	   <property name="targetDataSources">
+	      <map key-type="java.lang.String">
+	         <entry key="dataSourceRead" value-ref="dataSourceRead"/>
+	         <entry key="dataSourceWrite" value-ref="dataSourceWrite"/>
+	      </map>
+	   </property>
+	   <property name="defaultTargetDataSource" ref="dataSourceWrite" />
+	</bean>
+    
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis/configuration.xml" />
+		
+		<property name="dataSource" ref="dataSource" />
+		
+		<property name="mapperLocations" value="classpath:mybatis/mapper/*.xml" />
+		
+		<property name="typeAliasesPackage" value="com.zheng.order.entity" />
+		
+		<property name="plugins"> 
+			<bean class="com.zheng.mybatis.plugin.PageInterceptor">
+				 <property name="properties">
+			         <value>
+			             dialect=mysql
+			         </value>
+			     </property>
+   			</bean>
+		</property>    
+	</bean>
+	
+	<!-- spring与mybatis整合配置，扫描所有dao -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+		p:basePackage="com.zheng.order.dao"
+		p:sqlSessionFactoryBeanName="sqlSessionFactory" />
+		
+	<bean id="transactionManager"  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<!-- enable transaction demarcation with annotations 
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	-->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="create*" propagation="REQUIRED"
+				rollback-for="com.zheng.exception.GlobalServiceException" />
+			<tx:method name="batch*" propagation="REQUIRED"
+				rollback-for="com.zheng.exception.GlobalServiceException" />
+			<tx:method name="delete*" propagation="REQUIRED"
+				rollback-for="com.zheng.exception.GlobalServiceException" />
+			<tx:method name="save*" propagation="REQUIRED"
+				rollback-for="com.zheng.exception.GlobalServiceException" />
+			<tx:method name="insert*" propagation="REQUIRED"
+				rollback-for="com.zheng.exception.GlobalServiceException" />
+			<tx:method name="init*" propagation="REQUIRED"
+				rollback-for="com.zheng.exception.GlobalServiceException" />
+			<tx:method name="update*" propagation="REQUIRED"
+				rollback-for="com.zheng.exception.GlobalServiceException" />
+			<tx:method name="add*" propagation="REQUIRED"
+				rollback-for="com.zheng.exception.GlobalServiceException" />
+			<tx:method name="write*" propagation="REQUIRED"
+				rollback-for="com.zheng.exception.GlobalServiceException" />
+			<tx:method name="sort*" propagation="REQUIRED"
+				rollback-for="com.zheng.exception.GlobalServiceException" />
+			<tx:method name="on*" propagation="REQUIRED"
+				rollback-for="com.zheng.exception.GlobalServiceException" />
+			<tx:method name="do*" propagation="REQUIRED"
+				rollback-for="com.zheng.exception.GlobalServiceException" />
+			<tx:method name="enable*" propagation="REQUIRED"
+				rollback-for="com.zheng.exception.GlobalServiceException" />
+			<tx:method name="disable*" propagation="REQUIRED"
+				rollback-for="com.zheng.exception.GlobalServiceException" />
+			<tx:method name="*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="allServiceMethod"
+			expression="execution(* com.zheng.*.service.impl.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="allServiceMethod" />
+	</aop:config>
+	<aop:config>
+		<aop:pointcut id="allIServiceMethod"
+			expression="execution(* com.zheng.*.service.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="allIServiceMethod" />
+	</aop:config>
+	
+</beans>
