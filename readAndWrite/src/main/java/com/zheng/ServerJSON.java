@@ -42,21 +42,21 @@ public class ServerJSON extends Layout {
 	}
 
 	/**
-	     * For backwards compatibility, the default is to generate location information
-	     * in the log messages.
-	     */
-	    public ServerJSON() {
-	        this(true);
-	    }
+	 * For backwards compatibility, the default is to generate location information
+	 * in the log messages.
+	 */
+	public ServerJSON() {
+		this(true);
+	}
 
 	/**
-	     * Creates a layout that optionally inserts location information into log messages.
-	     *
-	     * @param locationInfo whether or not to include location information in the log messages.
-	     */
-	    public ServerJSON(boolean locationInfo) {
-	        this.locationInfo = locationInfo;
-	    }
+	 * Creates a layout that optionally inserts location information into log messages.
+	 *
+	 * @param locationInfo whether or not to include location information in the log messages.
+	 */
+	public ServerJSON(boolean locationInfo) {
+		this.locationInfo = locationInfo;
+	}
 
 	public String format(LoggingEvent loggingEvent) {
 		threadName = loggingEvent.getThreadName();

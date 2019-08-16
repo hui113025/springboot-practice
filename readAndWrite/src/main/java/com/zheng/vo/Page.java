@@ -29,10 +29,6 @@ public class Page<T> {
 
 		totalPage = String.valueOf(Integer.parseInt(totalCount) % Integer.parseInt(pageSize) == 0 ? Integer.parseInt(totalCount) / Integer.parseInt(pageSize) : (Integer.parseInt(totalCount)
 				/ Integer.parseInt(pageSize) + 1));
-		// ��ֹ������ĩҳ�����;�����ݱ�ɾ���������
-		// if ( pageNo > totalPage && totalPage!=0){
-		// pageNo = totalPage;
-		// }
 		startRecord = (Integer.parseInt(currentPage) - 1) * Integer.parseInt(pageSize) + 1;
 		endRecord = Integer.parseInt(currentPage) * Integer.parseInt(pageSize) + 1;
 	}

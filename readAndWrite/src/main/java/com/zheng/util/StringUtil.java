@@ -17,7 +17,7 @@ public class StringUtil {
 	 * 
 	 * In accordance with the demand requirements <br>
 	 *
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param emailStr
 	 * @return
@@ -34,7 +34,7 @@ public class StringUtil {
 	 * If the target string in contentStr are all same,<br>
 	 * then use this method is appropriate.<br>
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param contentStr
 	 * @param target
@@ -64,7 +64,7 @@ public class StringUtil {
 	 * program will return all different good<br>
 	 * GoOd,Good,gooD,GoOD,GOOD
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param contentStr
 	 * @param target
@@ -103,7 +103,7 @@ public class StringUtil {
 	/**
 	 * Function: If object is null return empty else return toString()
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param object
 	 * @return
@@ -119,7 +119,7 @@ public class StringUtil {
 	/**
 	 * Function: Get Random number by seed
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param seed
 	 * @return
@@ -132,7 +132,7 @@ public class StringUtil {
 	/**
 	 * Function: Judge every element in string array is not empty
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param strArray
 	 * @return
@@ -152,7 +152,7 @@ public class StringUtil {
 	/**
 	 * Function: loop print container item , for test.
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param c
 	 */
@@ -170,7 +170,7 @@ public class StringUtil {
 	/**
 	 * Function: loop print Map item, for test.
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param map
 	 */
@@ -186,7 +186,7 @@ public class StringUtil {
 	/**
 	 * Function: loop print array item, for test.
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param objs
 	 */
@@ -203,7 +203,7 @@ public class StringUtil {
 	/**
 	 * Function: Checks if the string is not empty.
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param str
 	 * @return boolean
@@ -215,7 +215,7 @@ public class StringUtil {
 	/**
 	 * Function: judge a collection for null or not
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param c
 	 * @return
@@ -227,7 +227,7 @@ public class StringUtil {
 	/**
 	 * Function:
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param c
 	 * @return
@@ -240,7 +240,7 @@ public class StringUtil {
 	 * 
 	 * Function:
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param os
 	 * @return
@@ -263,7 +263,7 @@ public class StringUtil {
 	 * 
 	 * Function:
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param objs
 	 * @return
@@ -276,7 +276,7 @@ public class StringUtil {
 	 * 
 	 * Function: judge string for null
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param str
 	 * @return
@@ -304,7 +304,7 @@ public class StringUtil {
 	 * contains up 3.Such as the existence of half-angle quotation mark (") should be replaced into the half-width
 	 * double quotes (" ") to escape and use the half-angle quotation marks (" ") contains the field values .
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param args
 	 * @return
@@ -331,7 +331,7 @@ public class StringUtil {
 	/**
 	 * Function: Reverser csv to generate common args
 	 * 
-	 * @author WeiShaoying
+	 * @author
 	 * 
 	 * @param param
 	 * @return
@@ -393,108 +393,6 @@ public class StringUtil {
 		}
 	}
 
-//	public static void main(String[] args) {
-//		String content = "This is a very GoOd-ggAAAggxyz$%#~!Good@solution&gooDgooDGoOd*****GoODGoODGOODgoo";
-//		String tgt = "good";
-//		logger.info(checkStrExistIgnoreCase(content, tgt));
-//		String[] arrs = checkStrMutlExistIgnoreCase(content, tgt);
-//		// String[] arrs = checkStrMutlExistIgnoreCase(content, null);
-//		if (notEmpty(arrs)) {
-//			for (String s : arrs) {
-//				logger.info("----" + s);
-//			}
-//		} else {
-//			logger.info("Null");
-//		}
-//
-//		int r = getRandomNum(100000);
-//		// logger.info("random = " + r);
-//		if (r > 1) {
-//			return;
-//		}
-//
-//		String[] arr1 = new String[] { "ws.sap.12@google.com.cn", "aini-99@126.com", "10001@qq.com",
-//				"A_99-88@hotmail.cn", "AI_NI_XIAOBAO_99@QQ.", "AIni9@QQ.99", "Yong-Weisy@ying.com.tv.cc",
-//				"90_99@360.cc", "mzd@36 0.com", "zyj@@163.com", "Zhang san@yeah.net", "Fe-wng@faye.com.cn",
-//				"test@bai-du.com", "zs@Bai-Du-2.com.cn", "test@weisy.bai-du.com.cn", "zs@Bai Du.c.c", "zs@BaiDu.e.cc",
-//				"zhang3@126.#com", "ws.sap.12@google.com." };
-//		for (int i = 0; i < arr1.length; i++) {
-//			logger.info(arr1[i] + " ---------- " + validateEmail(arr1[i]));
-//		}
-//
-//		String msg = "WEISY->Say: Job {0}.{1} Execute Failed at Host {2} on {3, date, yyyy-MM-dd HH:mm:ss}; Message: {4}";
-//		Object[] params = new Object[] { Scheduler.DEFAULT_GROUP, "<Scanner Job>", "192.168.1.24", new Date(),
-//				"NextFireTime is null" };
-//		String ret = MessageFormat.format(msg, params);
-//		logger.info(ret);
-//
-//		// String a[] = { "123", "dd", "vvv", "kkk", "mmm", "666" };
-//		// printArray(a);
-//		// List list = new ArrayList();
-//		// list.add("item-11");
-//		// list.add("item22");
-//		// list.add("item33");
-//		// list.add("item44");
-//		// list.add("itemv5");
-//		// list.add("item-66");
-//		// printContainer(list);
-//
-//		/*
-//		 * String str = "1,2,3,4,5,,6,,,"; logger.info(str.replaceAll(",", "\",\"")); String str2 =
-//		 * "1,\"a,b,c\",d,e,f"; logger.info(str2.replaceAll("\"", "\"\""));
-//		 */
-//
-//		// 1,2
-//		// 3-4-5,6
-//		// 78,,9"0"
-//		// "a,b","cde,fg
-//		String[] sa = { "1,2", "3-4-5,6", "78,,9\"0\"", "\"a,b\",\"cde,fg" };
-//		logger.info(geneCsvArgs(sa));
-//		// a1,2,3,",,"b
-//		// "c,d
-//		// e, F""
-//		// ",M""",",,HZ,
-//		String[] sb = { "a1,2,3,\",,\"b", "\"c,d", "e, F\"\"", "\",M\"\"\",\",,HZ," };
-//		logger.info(geneCsvArgs(sb));
-//
-//		// 1-2-3-,","-4,
-//		// ,A,B-C-D,
-//		// "",<"E-F">,
-//		// G,H, Z,
-//		String[] sc = { "1-2-3-,\",\"-4,", ",A,B-C-D,", "\"\",<\"E-F\">,", "G,H,  Z," };
-//		logger.info(geneCsvArgs(sc));
-//
-//		// Narash
-//		// WEBUI
-//		String[] sd = { "Narash", "WEBUI" };
-//		logger.info(geneCsvArgs(sd));
-//
-//		logger.info("---------------------");
-//		String a = "\"1,2\",\"3-4-5,6\",\"78,,9\"\"0\"\"\",\"\"\"a,b\"\",\"\"cde,fg\"";
-//		String[] arr = revCsv2Str(a);
-//		for (String s : arr) {
-//			logger.info(s);
-//		}
-//		logger.info("---------------------");
-//		String b = "\"a1,2,3,\"\",,\"\"b\",\"\"\"c,d\",\"e, F,\"\"\"\"\",\"\"\",M\"\"\"\"\"\",\"\",,HZ,\"";
-//		arr = revCsv2Str(b);
-//		for (String s : arr) {
-//			logger.info(s);
-//		}
-//		logger.info("---------------------");
-//		String c = "\"1-2-3-,\"\",\"\"-4,\",\",A,B-C-D,\",\"\"\"\"\",<\"\"E-F\"\">,\",\"G,H,  Z,\"";
-//		arr = revCsv2Str(c);
-//		for (String s : arr) {
-//			logger.info(s);
-//		}
-//		logger.info("---------------------");
-//		String d = "\"Narash\",\"WEBUI\"";
-//		arr = revCsv2Str(d);
-//		for (String s : arr) {
-//			logger.info(s);
-//		}
-//	}
-	
 	/**
      * Convert Json
      * 

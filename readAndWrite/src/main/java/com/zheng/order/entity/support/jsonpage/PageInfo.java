@@ -27,7 +27,7 @@ public class PageInfo {
 
 	/**
 	 * Add constructor methods <br>
-	 * WEISY-20130121
+	 * 20130121
 	 */
 	public PageInfo() {
 		super();
@@ -50,7 +50,7 @@ public class PageInfo {
 	}
 
 	/**
-	 * WEISY-20130121
+	 * 20130121
 	 */
 	public int getEndRowNum() {
 		// if endRowNum > 0 means have set value

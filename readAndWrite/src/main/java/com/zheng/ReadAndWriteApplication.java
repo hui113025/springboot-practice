@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication
-@EnableAutoConfiguration
-@ComponentScan
 @Configuration
 @EnableDiscoveryClient
 @ImportResource("classpath:/spring/spring-core.xml")

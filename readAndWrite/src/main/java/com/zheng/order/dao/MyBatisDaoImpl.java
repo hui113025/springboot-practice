@@ -39,11 +39,11 @@ import org.springframework.stereotype.Repository;
  * 	Date		Author		Action
  * </dd>
  * <dd>
- * 	Mar 5, 2011	henry leu	Create the class
+ * 	Mar 5, 2011	Create the class
  * </dd>
  * 
  * </dl>
- * @author	henry leu
+ * @author
  * @see			
  * @see			
  */
